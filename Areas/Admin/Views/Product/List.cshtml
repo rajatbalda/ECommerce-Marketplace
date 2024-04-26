@@ -1,0 +1,111 @@
+﻿@model AmazonFreshViewModel
+@{
+    ViewData["Title"] = "Maintain Product";
+    Layout = "_AdminLayout";
+}
+
+<h1 class="text-center mt-2">@ViewBag.Title</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <h3 class="mt-3">Categories</h3>
+        <div class="list-group">
+            <a asp-action="Index"
+               asp-route-active="all"
+               asp-route-activeCategory="all"
+               asp-route-activeVendor="@Model.ActiveVendor"
+               asp-route-activeWarehouse="@Model.ActiveWarehouse"
+               class="list-group-item @Model.CheckActiveCat("all")">
+                All
+            </a>
+            @foreach (Category conf in Model.Categories)
+            {
+                <a asp-action="Index"
+                   asp-route-activeCategory="@conf.CategoryID"
+                   asp-route-activeVendor="@Model.ActiveVendor"
+                   asp-route-activeWarehouse="@Model.ActiveWarehouse"
+                   class="list-group-item @Model.CheckActiveCat(conf.CategoryID.ToString())">
+                    @conf.Name
+                </a>
+            }
+        </div>
+        <h3 class="text-center">Vendor</h3>
+        <div class="list-group">
+            <a asp-action="Index"
+               asp-route-activeCategory="@Model.ActiveCategory"
+               asp-route-activeVendor="all"
+               asp-route-activeWarehouse="@Model.ActiveWarehouse"
+               class="list-group-item @Model.CheckActiveVendor("all")">
+                All
+            </a>
+            @foreach (Vendor conf in Model.Vendors)
+            {
+                <a asp-action="Index"
+                   asp-route-activeCategory="@Model.ActiveCategory"
+                   asp-route-activeVendor="@conf.VendorID"
+                   asp-route-activeWarehouse="@Model.ActiveWarehouse"
+                   class="list-group-item @Model.CheckActiveVendor(conf.VendorID.ToString())">
+                    @conf.Name
+                </a>
+            }
+        </div>
+        <h3 class="mt-3 text-center">Warehouse</h3>
+        <div class="list-group">
+            <a asp-action="Index"
+               asp-route-active="all"
+               asp-route-activeCategory="@Model.ActiveCategory"
+               asp-route-activeVendor="@Model.ActiveVendor"
+               asp-route-activeWarehouse="all"
+               class="list-group-item @Model.CheckActiveWarehouse("all")">
+                All
+            </a>
+            @foreach (Warehouse div in Model.Warehouses)
+            {
+                <a asp-action="Index"
+                   asp-route-activeCategory="@Model.ActiveCategory"
+                   asp-route-activeWarehouse="@div.WarehouseID"
+                   asp-route-activeVendor="@Model.ActiveVendor"
+                   class="list-group-item @Model.CheckActiveWarehouse(div.WarehouseID.ToString())">
+                    @div.Name
+                </a>
+            }
+        </div>
+    </div>
+    <div class="col-md-9 mt-3">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Price / Unit</th>
+                    <th>Vendor</th>
+                    <th>Warehouse</th>
+                    <th>Sold</th>
+                    <th></th>
+                    <th></th>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Products)
+                {
+                    <tr>
+                        <td>@p.ProductID</td>
+                        <td>@p.Name</td>
+                        <td>$ @p.Price / @p.Unit</td>
+                        <td>@p.Vendor.Name</td>
+                        <td>@p.Warehouse.Name</td>
+                        <td>@p.SoldCount</td>
+                        <td>
+                            <a asp-action="Update"
+                               asp-route-id="@p.ProductID">Update</a>
+                        </td>
+                        <td>
+                            <a asp-action="Delete"
+                               asp-route-id="@p.ProductID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Add" asp-controller="Product" class="btn btn-dark">Add New Product</a>
+    </div>
+</div>

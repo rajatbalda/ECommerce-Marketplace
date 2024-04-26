@@ -1,0 +1,207 @@
+﻿@model AmazonFreshViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_ShopperLayout";
+    ProductGridData current = Model.CurrentRoute;
+    GridData routes = Model.CurrentRoute.Clone();
+}
+
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="list-group list-group-flush sticky-top" style="top:5px;font-family:Didot, serif">
+                <h3 class="mt-3">Categories</h3>
+                <div class="list-group">
+                    <a asp-action="Index"
+                       asp-route-model.ActiveCategory="all"
+                       asp-route-model.ActivePrice="@Model.ActivePrice"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActiveCat("all")">
+                        All
+                    </a>
+                    @foreach (Category conf in Model.Categories)
+                    {
+                        <a asp-action="Index"
+                           asp-route-model.ActiveCategory="@conf.CategoryID"
+                           asp-route-model.ActivePrice="@Model.ActivePrice"
+                           asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                           class="list-group-item @Model.CheckActiveCat(conf.CategoryID.ToString())">
+                            @conf.Name
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="list-group list-group-flush sticky-top" style="top:5px;font-family:Didot, serif">
+                <h3 class="mt-3">Price </h3>
+                <div class="list-group">
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="all"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActivePrice("all")">
+                        All
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="5"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActivePrice("5")">
+                        Below 5 dollars
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="10"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActivePrice("10")">
+                        Below 10 dollars
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="20"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActivePrice("20")">
+                        Below 20 dollars
+                    </a>
+                </div>
+            </div>
+            <div class="list-group list-group-flush sticky-top" style="top:5px;font-family:Didot, serif">
+                <h3 class="mt-3">Special Features </h3>
+                <div class="list-group">
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="@Model.ActivePrice"
+                       asp-route-model.ActiveSpecial="@Model.ActiveSpecial"
+                       class="list-group-item @Model.CheckActiveSpecial("all")">
+                        All
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="@Model.ActivePrice"
+                       asp-route-model.ActiveSpecial="New Arrival"
+                       class="list-group-item @Model.CheckActiveSpecial("New Arrival")">
+                        New Arrivals
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="@Model.ActivePrice"
+                       asp-route-model.ActiveSpecial="Best Seller"
+                       class="list-group-item @Model.CheckActiveSpecial("Best Seller")">
+                        Best Sellers
+                    </a>
+                    <a asp-action="Index" asp-route-model.ActiveCategory="@Model.ActiveCategory"
+                       asp-route-model.ActivePrice="@Model.ActivePrice"
+                       asp-route-model.ActiveSpecial="On Sale"
+                       class="list-group-item @Model.CheckActiveSpecial("On Sale")">
+                        On Sale
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Sort By
+                </button>
+                <div class="dropdown-menu" aria-labelledby="sortDropdown">
+                    @{
+                        routes.SetSortAndDirection(nameof(Product.Price), current);
+                    }
+                    <a class="dropdown-item @(current.IsSortByPriceLowToHigh ? "active" : "")" asp-action="Index" asp-all-route-data="@routes.ToDictionary()">Price Low to High</a>
+                    @{
+                        routes.SetSortAndDirection(nameof(Product.Price), current);
+                    }
+                    <a class="dropdown-item @(current.IsSortByPriceHighToLow ? "active" : "")" asp-action="Index" asp-all-route-data="@routes.ToDictionary()">Price High to Low</a>
+                    @{
+                        routes.SetSortAndDirection(nameof(Product.SoldCount), current);
+                    }
+                    <a class="dropdown-item @(current.IsSoldCount ? "active" : "")" asp-action="Index" asp-all-route-data="@routes.ToDictionary()">Sold Count</a>
+                </div>
+            </div>
+            <div class="row">
+                @* <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="sortDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Sort By
+                </button>
+                <div class="dropdown-menu" aria-labelledby="sortDropdown">
+                <a class="dropdown-item" asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()">Price Low to High</a>
+                <a class="dropdown-item" asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()">Price High to Low</a>
+                <a class="dropdown-item" asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()">Sold Count</a>
+                </div>
+                </div> *@
+                @*  <tr>
+                <th>
+                @{
+                routes.SetSortAndDirection(
+                nameof(Product.Price), current);
+                }
+                <a asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()"
+                class="text-dark">Price Low  to High</a>
+                </th>
+                <th>
+                @{
+                routes.SetSortAndDirection(
+                nameof(Product.Price), current);
+                }
+                <a asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()"
+                class="text-dark">Price High to Low</a>
+                </th>
+                <th>
+                @{
+                routes.SetSortAndDirection(
+                nameof(Product.SoldCount), current);
+                }
+                <a asp-action="Index"
+                asp-all-route-data="@routes.ToDictionary()"
+                class="text-dark text-decoration-none">Sold Count</a>
+                </th>
+                </tr> *@
+                @foreach (Product item in Model.Products)
+                {
+                    <div class="col-md-4 mb-4 card-footer">
+                        <div class="card text-center h-80 border-0 box-shadow">
+                            @{
+                                string imgsrc = "/images/" + item.ProductID + ".jpg";
+                            }
+                            <a asp-action="Productdetails" asp-controller="Home" asp-route-productId="@item.ProductID"><img class="card-img-top" src="@imgsrc" alt="@item.Name" style="height: 250px;" /></a>
+                            <div class="card-body">
+                                <a asp-action="Productdetails" asp-controller="Home" asp-route-productId="@item.ProductID"><h5 class="card-title">@item.Name</h5></a>
+                                <p class="card-text">@item.Description</p>
+                                <div class="bg-white px-0">
+                                    <div class="btn-group btn-group-sm">
+                                        <a class="btn btn-outline-success" href="#">$ @item.Price</a>
+                                        <a class="btn btn-outline-dark" href="#">@item.SoldCount Sold</a>
+                                        <a class="btn btn-outline-danger" href="#">@item.TotalQty Left</a>
+                                    </div>
+                                </div>
+                                <div class="bg-white px-0 m-3">
+                                    <div class="btn-group btn-group-lg">
+                                        <form asp-action="Add" asp-controller="Cart" method="post">
+                                            <button type="submit" class="btn btn-success"
+                                                    name="product.ProductID" value="@item.ProductID">
+                                                Add to Cart
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+@* paging links *@
+@{
+    @* Reset to the current route values. This is necessary to clear the changes made while
+        creating the sorting links above. *@
+    routes = current.Clone();
+
+    for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        routes.PageNumber = i;
+        string active = @Nav.Active(i, current.PageNumber);
+        <a asp-action="Index" asp-all-route-data="@routes.ToDictionary()"
+           class="btn btn-outline-primary @active">@i</a>
+    }
+}

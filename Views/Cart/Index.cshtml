@@ -1,0 +1,87 @@
+﻿@model AmazonFreshViewModel
+@{
+    ViewData["Title"] = "Shopping Cart Page";
+    Layout = "_ShopperLayout";
+}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Shopping Cart</h2>
+            <hr />
+            <div class="row">
+                <div class="col-md-8">
+                    @if (Model.Products != null && Model.Products.Any())
+                    {
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Update</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <tr>
+                                        @{
+                                            string imgsrc = "/images/" + product.ProductID + ".jpg";
+                                        }
+                                        <form asp-action="UpdateQuantity" asp-controller="Cart">
+                                        <td><img src="@imgsrc" alt="Product Image" style="max-height: 100px;" /></td>
+                                        <input type="hidden" value=@product.ProductID name="productId" />
+                                        <td>@product.Name</td>
+                                        <td>@product.Description</td>
+                                        <td>$@product.Price</td>
+                                        <td>
+                                            <input type="number" value="@product.TotalQty" name="quantity" />
+                                        </td>
+                                        <td>
+                                                <button type="submit" class="btn btn-warning">Update</button>
+                                        </td>
+                                            </form>
+                                        <td>
+                                            <form asp-action="RemoveFromCart" asp-controller="Cart">
+                                                <input type="hidden" name="productId" value="@product.ProductID" />
+                                                <button type="submit" class="btn btn-danger">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                    else
+                    {
+                        <p>Your shopping cart is empty.</p>
+                    }
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Cart Summary</h5>
+                            <p>Total Items: @Model.Products.Count()</p>
+                            <p>Total Price: $@Model.Products.Sum(p => p.Price * p.TotalQty)</p>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form asp-action="Checkout" method="post" asp-controller="Cart">
+                                        <button type="submit" class="btn btn-success">Check out</button>
+                                    </form>
+                                </div><div class="col-md-4">
+                                    <a class="btn btn-primary" asp-controller="Home" asp-action="Index">Continue Shopping</a>
+                                </div>
+                                <div class="col-md-4">
+                                    <form asp-action="ClearCart" method="post" asp-controller="Cart">
+                                        <button type="submit" class="btn btn-danger">Clear Cart</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>

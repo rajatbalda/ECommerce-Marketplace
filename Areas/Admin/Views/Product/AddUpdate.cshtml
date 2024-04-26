@@ -1,0 +1,80 @@
+﻿@model Product
+@{
+    ViewBag.Title = ViewBag.Action + " Product";
+    Layout = "_AdminLayout";
+}
+
+<h1>@ViewBag.Title</h1>
+
+<form asp-action="Update" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" type="text" placeholder="Enter Product Name">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <input asp-for="Description" class="form-control" type="text" placeholder="Enter Product Description">
+    </div>
+    <div class="mb-3">
+        <label asp-for="TotalQty" class="form-label"></label>
+        <input asp-for="TotalQty" class="form-control" type="number" placeholder="Enter Total Quantity">
+    </div>
+    <div class="mb-3">
+        <label asp-for="onSale" class="form-label"></label>
+        <select asp-for="onSale" class="form-control">
+            <option>Select Flag Value</option>
+            <option value="0">0</option>
+            <option value="1">1</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" type="text" class="form-control" placeholder="Enter Price" value="@(Model.Price != 0 ? Model.Price : null)">
+    </div>
+    <div class="mb-3">
+        <label asp-for="Unit" class="form-label"></label>
+        <select asp-for="Unit" type="text" class="form-control text-uppercase">
+            <option selected>Select Unit</option>
+            <option value="pound">pound</option>
+            <option value="box">box</option>
+            <option value="gallon">gallon</option>
+            <option value="quart">quart</option>
+            <option value="gram">gram</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="SoldCount" class="form-label"></label>
+        <input asp-for="SoldCount" type="number" class="form-control" placeholder="Enter Sold Count" value="@(Model.SoldCount != 0 ? Model.SoldCount : null)">
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryID" class="form-label">Category</label>
+        <select asp-for="CategoryID"
+                asp-items="@(new SelectList(ViewBag.categories,
+                         "CategoryID", "Name"))"
+                class="form-select"><option selected>Select Category</option></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="VendorID" class="form-label">Speciality</label>
+        <select asp-for="VendorID"
+                asp-items="@(new SelectList(ViewBag.vendors,
+                         "VendorID", "Name"))"
+                class="form-select"><option selected>Select Vendor</option></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="WarehouseID" class="form-label">Warehouse</label>
+        <select asp-for="WarehouseID"
+                asp-items="@(new SelectList(ViewBag.warehouses,
+                         "WarehouseID", "Name"))"
+                class="form-select">
+            <option selected>Select Warehouse</option></select>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ProductImage" class="form-label"></label>
+        <input asp-for="ProductImage" type="file" class="form-control">
+    </div>
+    <input type="hidden" asp-for="ProductID" />
+
+    <button type="submit" class="btn btn-primary">@ViewBag.Action</button>
+    <a asp-action="List" class="btn btn-primary">Cancel</a>
+</form>

@@ -1,0 +1,26 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Layout = "_ShopperLayout";
+}
+<div>
+    <h2>Sign in</h2>
+    <form asp-action="Login" asp-controller="Register" method="post">
+        <div class="form-group">
+            <label asp-for="Username">Username</label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password">Password</label>
+            <input asp-for="Password" type="password" class="form-control" />
+            <span asp-validation-for="Password"></span>
+        </div>
+        <div class="form-group">
+        <button type="submit" class="btn btn-dark">Sign in</button>
+        </div>
+    <div class="form-group">
+        <a asp-action="Register" asp-controller="Register" class="btn btn-primary float-end mb-5">Register Here</a>
+    </div>
+    </form>
+</div>

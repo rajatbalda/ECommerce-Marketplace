@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "_Layout";
+
+    string controller =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+        string area =
+        ViewContext.RouteData.Values["area"]?.ToString() ?? "";
+    string action =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+}
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-secondary fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Amazon Fresh</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav me-auto">
+                    @* <a class="nav-item nav-link
+                    @(controller == "Home" && action == "Index" ? "active" : "")"
+                    asp-area="Admin" asp-controller="Home" asp-action="Index">Home</a> *@
+                    <a class="nav-item nav-link
+                       @(controller == "Products" && area == "Admin" && action=="List" ? "active" : "")"
+                       asp-area="Admin" asp-controller="Products"> Maintain Product</a>
+                    @* <a class="nav-item nav-link
+                    @(@*   action =="categories" ? "active" : "")"
+                    asp-area="Admin" asp-controller="" asp-action="categories">Categories</a> *@
+                </div>
+                <div class="navbar-nav navbar-right">
+                    <a class="nav-link"
+                       asp-area="" asp-controller="Home" asp-action="Index">View Site</a>
+                </div>
+            </nav>
+        </div>
+    </nav>
+</header>
+<main class="mt-5 shadow">
+    <div class="container container-fluid mt-5 form-control">
+    @if (TempData.Keys.Contains("message"))
+    {
+        <h4 class="bg-success text-white text-center p-2 mt-5">@TempData["message"]</h4>
+    }
+        <div class="form-control container container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+</main>
+
+@section scripts {
+    @RenderSection("scripts", required: false)
+}

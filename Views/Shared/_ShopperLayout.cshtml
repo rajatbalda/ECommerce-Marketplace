@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "_Layout";
+
+    string controller =
+        ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string action =
+        ViewContext.RouteData.Values["action"]?.ToString() ?? "";
+}
+
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Amazon Fresh</a>
+            <button class="navbar-toggler" type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-controls="navbarSupportedContent" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navbarSupportedContent">
+                <div class="navbar-nav me-auto">
+                    <a class="nav-item nav-link
+                      @(controller == "Home" && action == "Index" ? "active" : "")"
+                       asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="nav-item nav-link
+                      @(controller == "Product" ? "active" : "")"
+                       asp-controller="Product">Products</a>
+                    @*  <a class="nav-item nav-link
+                    @(controller == "Home" && action == "About" ? "active" : "")"
+                    asp-controller="Home" asp-action="About">About</a>
+                    <a class="nav-item nav-link
+                    @(controller == "Home" && action == "ContactUs" ? "active" : "")"
+                    asp-controller="Home" asp-action="ContactUs">Contact Us</a> *@
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Categories
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Sample Category</a></li>
+                        </ul>
+                    </div>
+                    <form class="d-flex">
+                        <input class="form-control me-2" type="search" placeholder="Category Keywords" aria-label="Search">
+                        <button class="btn btn-light" type="submit">Search</button>
+                    </form>
+                </div>
+                <div class="navbar-nav navbar-right">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Language
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="languageDropdown">
+                            <li><a class="dropdown-item" href="#">English-US</a></li>
+                            <li><a class="dropdown-item" href="#">English-UK</a></li>
+                        </ul>
+                    </div>
+                    <div class="navbar-nav me-auto">
+                        <a class="nav-item nav-link" href="#" role="button">
+                            <i class="fas fa-shopping-cart"></i>
+                            @{
+                                var session = new AmazonFreshSession(Context.Session);
+                                int? count = session.GetMyTeamCount();
+                                @if (count.HasValue)
+                                {
+                                           <a asp-controller="Cart" asp-action="Index"
+                                               class="navbar-nav me-auto">
+                                        <span class="nav-item nav-link">@count item</span>
+                                    </a>
+                                }
+                            }
+                        </a>
+                    </div>
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user"></i></a>
+                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+                            <li><a class="dropdown-item" asp-controller="Register" asp-action="Login">Log In</a></li>
+                            <li><a class="dropdown-item" asp-controller="Register" asp-action="Register">Register</a></li>
+                        </ul>
+                    </div>
+                    <a class="nav-item nav-link"
+                       asp-area="Admin" asp-controller="Home" asp-action="Index">Admin</a>
+                </div>
+            </nav>
+        </div>
+    </nav>
+</header>
+<main class="mt-5">
+    <div class="container container-fluid mt-5 form-control" style="margin-top:15px;">
+        @if (TempData.Keys.Contains("message"))
+        {
+            <h4 class="bg-success p-2 text-white">@TempData["message"]</h4>
+        }
+        <div class="form-control container container-fluid">
+            @RenderBody()
+        </div>
+    </div>
+</main>
