@@ -201,5 +201,3 @@ For questions or feedback, reach out to [contact@rajatbalda.in](mailto:contact@r
 * Inventory management features
 * Multi-language and localization support
 * Upgrade UI with React or Blazor
-
-```
