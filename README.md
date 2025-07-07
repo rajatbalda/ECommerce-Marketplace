@@ -189,7 +189,7 @@ If you like this project, please ⭐️ it on [GitHub](https://github.com/rajatb
 
 ## 📧 Contact
 
-For questions or feedback, reach out to [rajatbalda@gmail.com](mailto:contact@rajatbalda.in).
+For questions or feedback, reach out to [contact@rajatbalda.in](mailto:contact@rajatbalda.in).
 
 ---
 
